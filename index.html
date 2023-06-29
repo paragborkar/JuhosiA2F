@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        h1{
+            text-align: center;
+            margin: 2rem;
+        }
+        form{
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        input{
+            margin: 2rem;
+        }
+        button{
+            width: 12rem;
+            height: 2rem;
+            background-color: rgba(141, 148, 151, 0.865);
+            border: none;
+            margin: 1rem;
+        }
+
+
+    </style>
+</head>
+<body>
+    <h1>Sign In</h1>
+    <form id="form">
+        <label>ID</label><input type="number" name="id" id="name"/><br>
+        <label>Password</label><input type="password" name="password" id="pass"/><br>
+        <button type="submit" >SIGN-IN</button> <button id="fp">Change Password</button>
+    </form>
+    <script>
+         const formELement=document.getElementById("form");
+        formELement.addEventListener('submit',e=>{
+            e.preventDefault();
+            const formData=new FormData(formELement);
+            const data=Object.fromEntries(formData);
+            console.log(data);
+            fetch("https://juhosia2backend.onrender.com/api/v1/login",{
+                method:'POST',
+                headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+                body:JSON.stringify(data)
+            }).then(res=>res.json()).then((data)=>{if(data.message==="Login Successful"){localStorage.setItem("id",data.user[0].id);localStorage.setItem("name",data.user[0].name);window.location.href = "details.html";}else{alert("Incorrect Id or Password")}}).catch(err=>console.log(err));
+           });
+           const ForPass=document.getElementById("fp");
+           ForPass.addEventListener('click', ForgotPass);
+        function ForgotPass(){
+            window.location.href = "ForgotPass.html";
+        }
+    </script>
+</body>
+</html>

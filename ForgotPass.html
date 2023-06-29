@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Forgot Password</title>
+    <style>
+          *{
+            margin: 0;
+            padding: 0;
+        }
+        h1{
+            text-align: center;
+            margin: 2rem;
+        }
+        form{
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        input{
+            margin: 2rem;
+        }
+        button{
+            width: 12rem;
+            height: 2rem;
+            background-color: rgb(47, 101, 188);
+            border: none;
+            margin: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Forgot Password</h1>
+    <form id="form">
+        <label>Enter Mobile No</label>
+        <input type="number" name="phone_number" id="phone_number"><br>
+        <label>New Password</label>
+        <input type="password"><br>
+        <label>Confirm New Password</label>
+        <input type="password" name="password" id="password"><br>
+        <button type="submit">Update Password</button>
+    </form>
+    <script>
+        const formELement=document.getElementById("form");
+        formELement.addEventListener('submit',e=>{
+            e.preventDefault();
+            const formData=new FormData(formELement);
+            const data=Object.fromEntries(formData);
+            fetch("https://juhosia2backend.onrender.com/api/v1/forgotpass",{
+                method:'POST',
+                headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+                body:JSON.stringify(data)
+            }).then(res=>res.json()).then((data)=>{if(data.message==="Password Changed Successfully"){alert("Password Change Successfully")}else{alert("Incorrect Id or Password");}}).catch(err=>console.log(err));
+            // }
+           });
+    </script>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+    <title>Orders Page</title>
+    <style>
+          h1{
+            text-align: center;
+            margin: 2rem;
+        }
+        table{
+            border: 1px solid;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        td,th{
+            border: 1px solid;
+        }
+       div{
+        display: flex;
+        justify-content: center;
+        margin: 1rem;
+       }
+    </style>
+</head>
+<body>
+    <h1>Order Details</h1>
+    <table id="tableContainer">
+        <div>
+            <button id="exportButton" onclick="exportTableToXLSX('tableContainer', 'data.xlsx')">Export to Excel</button>
+        </div>
+    </table>
+    <script>
+document.addEventListener('DOMContentLoaded', async function() {
+            const user_id=localStorage.getItem("id");
+            let response= await fetch(`https://juhosia2backend.onrender.com/api/v1/orders?user_id=${user_id}`);
+            let data= await response.json();
+            data=data.result;
+            generateTable(data);
+});
+
+function exportTableToXLSX(tableId, fileName) {
+  const table = document.getElementById(tableId);
+  const workbook = XLSX.utils.book_new();
+  const worksheet = XLSX.utils.table_to_sheet(table);
+  XLSX.utils.book_append_sheet(workbook, worksheet, 'Sheet1');
+  const excelData = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
+  const blob = new Blob([excelData], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+  const downloadLink = document.createElement('a');
+  downloadLink.href = URL.createObjectURL(blob);
+  downloadLink.download = fileName;
+  document.body.appendChild(downloadLink);
+  downloadLink.click();
+  document.body.removeChild(downloadLink);
+  URL.revokeObjectURL(downloadLink.href);
+}
+
+function generateTable(data) {
+  const table = document.createElement('table');
+  const thead = document.createElement('thead');
+  const headerRow = document.createElement('tr');
+  for (let key in data[0]) {
+    const th = document.createElement('th');
+    th.textContent = key;
+    headerRow.appendChild(th);
+  }
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+  const tbody = document.createElement('tbody');
+  data.forEach(item => {
+    const row = document.createElement('tr');
+    for (let key in item) {
+      const cell = document.createElement('td');
+      cell.textContent = item[key];
+      row.appendChild(cell);
+    }
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  const container = document.getElementById('tableContainer');
+  container.appendChild(table);
+}
+    </script>
+</body>
+</html>

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Details Page</title>
+    <style>
+         *{
+            margin: 0;
+            padding: 0;
+        }
+        h1{
+            text-align: center;
+            margin: 2rem;
+        }
+        form{
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        input{
+            margin: 1rem;
+        }
+        button{
+            width: 12rem;
+            height: 2rem;
+            background-color: rgb(47, 101, 188);
+            margin-left: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <h1>Details Form</h1>
+    <form id="form">
+        <label>Order Date</label><input type="date" id="order_date" name="order_date"><br>
+        <label>Company</label><input type="text" id="user_id" name="user_id" readonly><br>
+        <label>Order Owner</label><input type="text" id="item"  readonly><br>
+        <label>Item/Product</label><input type="text" name="item"><br>
+        <label>EA/Count</label><input type="number" name="count"><br>
+        <label>Weight</label><input type="text" name="weight"><br>
+        <label>Requests</label><input type="text" name="requests"><br>
+        <button type="submit">Submit</button><button onclick="showOrders()">Show Orders</button>
+    </form>
+    <script>
+        function showOrders(){
+            window.location.href = "Orders.html";
+        }
+        document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById('user_id').value = localStorage.getItem("id");
+        document.getElementById('item').value = localStorage.getItem("name");
+    });
+    const formELement=document.getElementById("form");
+        formELement.addEventListener('submit',e=>{
+            e.preventDefault();
+            const formData=new FormData(formELement);
+            const data=Object.fromEntries(formData);
+            console.log(data);
+            fetch("https://juhosia2backend.onrender.com/api/v1/details",{
+                method:'POST',
+                headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+            },
+                body:JSON.stringify(data)
+            }).then(res=>res.json()).then((data)=>{if(data.message==="Data Inserted Successfully"){alert("Data Inserted Successfully")}else{alert("Unable To Insert Data");}}).catch(err=>console.log(err));
+           });
+    </script>
+</body>
+</html>
