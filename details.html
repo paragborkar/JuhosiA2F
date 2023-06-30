@@ -29,6 +29,18 @@
         }
         button:hover {
             background-color:rgb(17, 49, 100);
+            color: white;
+        }
+        a{
+            text-decoration: none;
+            margin-left: 2rem;
+            background-color:  rgb(47, 101, 188);
+            color: black;
+            padding: 0.5rem;
+        }
+        a:hover{
+            background-color:rgb(17, 49, 100);
+            color: white;
         }
     </style>
 </head>
@@ -42,12 +54,9 @@
         <label>EA/Count</label><input type="number" name="count"><br>
         <label>Weight</label><input type="text" name="weight"><br>
         <label>Requests</label><input type="text" name="requests"><br>
-        <button type="submit">Submit</button><button onclick="showOrders()">Show Orders</button>
+        <button type="submit">Submit</button><a href="Orders.html">Show Orders</a>
     </form>
     <script>
-        function showOrders(){
-            window.location.href = "Orders.html";
-        }
         document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('user_id').value = localStorage.getItem("id");
         document.getElementById('item').value = localStorage.getItem("name");
