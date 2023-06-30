@@ -27,6 +27,9 @@
             background-color: rgb(47, 101, 188);
             margin-left: 2rem;
         }
+        button:hover {
+            background-color:rgb(17, 49, 100);
+        }
     </style>
 </head>
 <body>
@@ -39,7 +42,7 @@
         <label>EA/Count</label><input type="number" name="count"><br>
         <label>Weight</label><input type="text" name="weight"><br>
         <label>Requests</label><input type="text" name="requests"><br>
-        <button onclick="SubmitHandler">Submit</button><button onclick="showOrders()">Show Orders</button>
+        <button type="submit">Submit</button><button onclick="showOrders()">Show Orders</button>
     </form>
     <script>
         function showOrders(){
@@ -50,7 +53,8 @@
         document.getElementById('item').value = localStorage.getItem("name");
     });
     const formELement=document.getElementById("form");
-      function SubmitHandlerL(){
+        formELement.addEventListener('submit',e=>{
+            e.preventDefault();
             const formData=new FormData(formELement);
             const data=Object.fromEntries(formData);
             console.log(data);
@@ -62,7 +66,7 @@
             },
                 body:JSON.stringify(data)
             }).then(res=>res.json()).then((data)=>{if(data.message==="Data Inserted Successfully"){alert("Data Inserted Successfully")}else{alert("Unable To Insert Data");}}).catch(err=>console.log(err));
-           };
+           });
     </script>
 </body>
 </html>
