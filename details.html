@@ -39,7 +39,7 @@
         <label>EA/Count</label><input type="number" name="count"><br>
         <label>Weight</label><input type="text" name="weight"><br>
         <label>Requests</label><input type="text" name="requests"><br>
-        <button type="submit">Submit</button><button onclick="showOrders()">Show Orders</button>
+        <button onclick="SubmitHandler">Submit</button><button onclick="showOrders()">Show Orders</button>
     </form>
     <script>
         function showOrders(){
@@ -50,8 +50,7 @@
         document.getElementById('item').value = localStorage.getItem("name");
     });
     const formELement=document.getElementById("form");
-        formELement.addEventListener('submit',e=>{
-            e.preventDefault();
+      function SubmitHandlerL(){
             const formData=new FormData(formELement);
             const data=Object.fromEntries(formData);
             console.log(data);
@@ -63,7 +62,7 @@
             },
                 body:JSON.stringify(data)
             }).then(res=>res.json()).then((data)=>{if(data.message==="Data Inserted Successfully"){alert("Data Inserted Successfully")}else{alert("Unable To Insert Data");}}).catch(err=>console.log(err));
-           });
+           };
     </script>
 </body>
 </html>
